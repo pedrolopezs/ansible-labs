@@ -1,0 +1,30 @@
+---
+- hosts: localhost 
+  gather_facts: No
+  vars:
+    dirs:
+    - defaults
+    - handlers
+    - meta
+    - tasks
+    - vars
+    - files
+    - templates
+  vars_prompt:
+  - name: "name"
+    prompt: "Role name"
+    private: No
+  tasks:
+  - name: create directories
+    file:
+      state: directory
+      path: "{{ name }}/{{ item }}"
+    loop: "{{ dirs }}"
+  - name: create base yaml 
+    copy:
+      content: |
+        ---
+        #{{ item.1 }} file for {{ name }}
+      dest: "{{ name }}/{{ item.1 }}/main.yaml"
+    with_indexed_items: "{{ dirs }}" 
+    when: item.0|int < 5

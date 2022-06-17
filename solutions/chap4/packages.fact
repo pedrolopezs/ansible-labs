@@ -1,0 +1,4 @@
+#!/bin/sh
+echo -n {
+rpm -qa --queryformat '"%{NAME}":"%{SIZE}",' | sed 's/.$//'
+echo -n }

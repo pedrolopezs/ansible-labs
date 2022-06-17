@@ -1,0 +1,6 @@
+---
+- name: Install {{ service }}
+  yum: "name={{ service }} state=installed"
+
+- name: Enable and Start {{ service }}
+  service: "name={{ service }} enabled=yes state=started"

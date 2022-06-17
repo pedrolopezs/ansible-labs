@@ -1,0 +1,9 @@
+---
+- hosts: localhost
+  vars:
+    environments: ['dev','qa','prod']
+  tasks:
+  - name: Create dirs
+    file: path=/data/app1/{{ item }} state=directory
+    with_items:
+    - "{{ environments }}"

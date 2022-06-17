@@ -1,0 +1,28 @@
+---
+- hosts: localhost
+  become: Yes
+  vars_prompt:
+  - name: "LV"
+    prompt: "What LV do you want to grow?"
+    private: no
+  - name: "GROW"
+    prompt: "Grow by how many MB?"
+    private: no
+  tasks:
+  - name: Verify LV exists
+    assert:
+      that: LV in ansible_lvm.lvs
+      msg: "Can't grow LV that doesn't exist"
+  - name: Get free space in VG
+    command: >
+      vgs -o vg_free --noheadings
+      --nosuffix --units m vg0
+    register: vgs_result
+  - debug:
+      msg: "{{ vgs_result.stdout[2:6]|int }}"
+  - fail:
+      msg: "Not enough free space in VG to grow by {{ GROW }} MB"
+    when: vgs_result.stdout[2:6]|int < GROW|int
+    
+  - name: Grow LV
+    lvol: "vg=vg0 lv={{ LV }} size={{ GROW }}"

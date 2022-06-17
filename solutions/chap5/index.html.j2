@@ -1,0 +1,13 @@
+<html>
+<p>This setup has a load balancer configured</p>
+
+<ul>The following nodes have been configured to serve this cluster:
+
+{% for host in groups.web %}
+<li>Container Name: {{ hostvars[host].ansible_hostname }}
+IP: {{ hostvars[host].ansible_default_ipv4.address }} Port: 80</li>
+{% endfor %}
+</ul>
+
+<p>You are currently connected to {{ inventory_hostname }}</p>
+</html>

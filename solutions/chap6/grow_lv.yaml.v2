@@ -1,0 +1,13 @@
+---
+- hosts: localhost
+  become: Yes
+  vars_prompt:
+  - name: "LV"
+    prompt: "What LV do you want to grow?"
+    private: no
+  - name: "SIZE"
+    prompt: "How big should LV be in MB?"
+    private: no
+  tasks:
+  - name: Grow LV
+    lvol: "vg=vg0 lv={{ LV }} size={{ SIZE }}"

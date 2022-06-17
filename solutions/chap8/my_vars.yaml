@@ -1,0 +1,5 @@
+my_name: "Bob"
+my_age: "{{ vault_age }}"
+my_weight: "{{ vault_weight }}"
+my_eye_color: "Blue"
+

@@ -1,0 +1,9 @@
+---
+- hosts: localhost
+  gather_facts: false
+  vars:
+      var_demo: "VAR: {{ lookup('pipe', 'date') }} "
+  tasks:
+  - debug: var=var_demo
+  - command: sleep 3
+  - debug: var=var_demo

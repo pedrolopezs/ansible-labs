@@ -1,0 +1,9 @@
+---
+- hosts: localhost
+  tasks:
+  - name: Generate report of installed large packages
+    shell: "echo {{ item.key }} >> /tmp/report"
+    with_dict: "{{ ansible_local.packages }}"
+    when: item.value|int > 15000000
+
+...

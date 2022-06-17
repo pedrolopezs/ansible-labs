@@ -1,0 +1,6 @@
+---
+- hosts: localhost
+  become: Yes
+  tasks:
+  - name: Grow LV
+    lvol: "vg=vg0 lv=demo2 size=105M"

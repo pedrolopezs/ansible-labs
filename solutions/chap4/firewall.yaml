@@ -1,0 +1,13 @@
+---
+- name: Open TCP port {{ port }}
+  firewalld:
+    port: "{{ port ~ '/tcp'}}"
+    immediate: true
+    permanent: true
+    state: enabled
+- firewalld:
+    interface: eth0
+    immediate: true
+    permanent: true
+    state: enabled
+    zone: public

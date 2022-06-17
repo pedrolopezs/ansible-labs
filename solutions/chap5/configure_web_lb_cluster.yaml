@@ -1,0 +1,35 @@
+---
+- hosts: web
+  gather_facts: No
+  tasks:
+  - name: Enable EPEL repo
+    yum: 
+      name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+
+  - name: Install nginx and needed network package
+    yum: 
+      name: ['nginx', 'iproute'] 
+
+  #Facts needed for template
+  - setup:
+
+  - name: Create index.html
+    template:
+      src: ./templates/index.html.j2
+      dest: /usr/share/nginx/html/index.html
+
+  - name: Start nginx
+    service: name=nginx state=started enabled=yes
+
+- hosts: lb
+  tasks:
+  - name: Install HAProxy
+    yum: name=haproxy state=present
+
+  - name: Create HAProxy config
+    template:
+      src: ./templates/haproxy.cfg.j2
+      dest: /etc/haproxy/haproxy.cfg
+      
+  - name: Start HAProxy
+    service: name=haproxy state=started enabled=yes 

@@ -1,0 +1,2 @@
+---
+web_content: "Welcome to the {{ ansible_fqdn }} website!"

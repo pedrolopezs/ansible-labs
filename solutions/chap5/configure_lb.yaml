@@ -1,0 +1,13 @@
+---
+- hosts: lb
+  tasks:
+  - name: Install HAProxy
+    yum: name=haproxy state=present
+
+  - name: Create HAProxy config
+    template:
+      src: ./templates/haproxy.cfg.j2
+      dest: /etc/haproxy/haproxy.cfg
+      
+  - name: Start HAProxy
+    service: name=haproxy state=started enabled=yes 

@@ -1,0 +1,12 @@
+---
+- hosts: localhost
+  tasks:
+  - name: install figlet
+    yum: name=/labfiles/figlet-2.2.5-9.el7.x86_64.rpm
+  - name: generate hostname banner with figlet
+    command: "figlet -w 150 {{ ansible_fqdn }}"
+    register: fig_hostname
+  - name: Generate /etc/motd from template
+    template:
+        src: motd.j2
+        dest: /etc/motd

@@ -1,0 +1,8 @@
+---
+- hosts: ~web
+  gather_facts: No
+  tasks:
+  - name: Drop by default
+    iptables:
+      chain: INPUT
+      policy: DROP

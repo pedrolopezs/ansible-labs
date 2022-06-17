@@ -1,0 +1,13 @@
+---
+- hosts: centos_1,centos_2
+  tasks:
+  - name: Create archive
+    archive:
+      path:
+      - /etc/hostname
+      - /etc/os-release
+      dest: /tmp/backup.tgz
+      format: gz
+
+
+...

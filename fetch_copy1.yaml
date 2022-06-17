@@ -1,0 +1,11 @@
+---
+- hosts: localhost
+  gather_facts: false
+  tasks:
+  - name: create empty directory to hold hosts files
+    file: path=/tmp/hosts state={{ item }}
+    loop: ["absent", "directory"]
+
+- hosts: centos_1,centos_2
+  tasks:
+

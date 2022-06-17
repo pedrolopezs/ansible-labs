@@ -1,0 +1,35 @@
+---
+- hosts: ~web
+  gather_facts: false
+  tasks:
+
+# Add your tasks between the marks
+##################################
+
+
+
+##################################
+
+  - setup: gather_subset=network,virtual
+    # had to wait until now because the hosts needed the iproute
+    # package for the network fact gathering to work
+
+  - name: Simple webpage
+    copy:
+      dest: /var/www/html/index.html 
+      #sneak peek: "facts" allow you to reference data collected from the managed host
+      content: "<html>Welcome to container: {{ ansible_nodename }} website</html>"
+
+  - name: Verify connections
+    uri: 
+      url: http://{{ ansible_default_ipv4.address }}/
+      return_content: Yes
+    #sneak peek: "delegation" allows having another host run a task on behalf of the inventory host
+    #in this case, the localhost trys connecting back to the web service on the managed host
+    delegate_to: localhost
+    register: webpage
+
+  - name: Connection results
+    debug:
+      msg: "URL: {{ webpage.url }} Returned: {{ webpage.content }}"
+...

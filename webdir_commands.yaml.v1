@@ -1,0 +1,20 @@
+---
+- hosts: localhost
+  tasks:
+  - name: Find homedir
+    shell: "getent passwd visitor | cut -d: -f6"
+    register: HOMEDIR
+
+  - name: Create webdir
+    command: "mkdir -p {{ HOMEDIR.stdout }}/public_html"
+
+  - name: Create webpage
+    shell: > 
+      echo "<html><h1>Hello World</h1></html>"
+      > "{{ HOMEDIR.stdout }}/public_html/index.html"
+
+  - name: Set ownership
+    shell: "chown -R visitor: {{ HOMEDIR.stdout }}/public_html/index.html"
+
+  - name: Set permissions
+    command: "chmod 755 {{ HOMEDIR.stdout }}"

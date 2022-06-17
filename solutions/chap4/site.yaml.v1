@@ -1,0 +1,17 @@
+---
+- hosts: web
+  vars:
+    port: 8000
+  tasks:
+  - name: Install web
+    import_tasks: tasks/install.yaml
+    vars:
+      service: httpd
+
+  - name: Install firewall
+    import_tasks: tasks/install.yaml
+    vars:
+      service: firewalld
+
+  - name: Configure Firewall
+    import_tasks: tasks/firewall.yaml

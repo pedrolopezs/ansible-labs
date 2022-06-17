@@ -1,0 +1,23 @@
+---
+- hosts: centos_1,centos_2
+  tasks:
+  - name: Remove dialout group
+    group:
+      name: dialout
+      state: absent
+
+  - name: Create admin group
+    group:
+      name: admin
+      gid: 13
+
+  - name: Create demo account
+    user:
+      name: demo
+      uid: 20000
+      home: /home/demo
+      shell: /bin/sh
+      group: admin
+      groups: wheel
+
+...

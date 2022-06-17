@@ -1,0 +1,4 @@
+---
+- hosts: redis01
+  roles:
+    - DavidWittman.redis

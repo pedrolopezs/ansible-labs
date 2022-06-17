@@ -1,0 +1,6 @@
+---
+- hosts: localhost
+  vars_files:
+  - jinja_vars.yaml
+  tasks:
+  - template: dest=/tmp/output src=template_demo.j2

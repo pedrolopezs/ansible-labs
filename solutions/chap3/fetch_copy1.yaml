@@ -1,0 +1,32 @@
+---
+- hosts: localhost
+  gather_facts: false
+  tasks:
+  - name: create empty directory to hold hosts files
+    file: path=/tmp/hosts state={{ item }}
+    loop: ["absent", "directory"]
+
+- hosts: centos_1,centos_2
+  tasks:
+  - name: Create directory to hold hosts files
+    file:
+      path: /tmp/hosts
+      state: directory
+
+  - name: Get all hosts files
+    fetch:
+      src: /etc/hosts
+      dest: /tmp/hosts/{{ inventory_hostname }}
+      flat: Yes
+
+  - name: Copy all files back
+    copy:
+      src: /tmp/hosts
+      dest: /tmp/
+
+  - name: Create README
+    copy:
+      dest: /tmp/hosts/README
+      content: |
+        hosts files from all centos containers
+

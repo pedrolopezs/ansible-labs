@@ -1,0 +1,9 @@
+---
+- hosts: ~raw
+  gather_facts: false
+  tasks:
+  - name: Get Python installed
+    raw: "apk upgrade; apk update; apk add python2"
+
+  - name: Test connection
+    ping:

@@ -1,0 +1,20 @@
+---
+- hosts: ~redis
+  tasks:
+  - name: verify all redis servers
+    command: "redis-cli -h {{ ansible_default_ipv4.address }} ping"
+    changed_when: false
+    register: ping_test
+  - debug:
+      msg: "Redis on {{ ansible_default_ipv4.address }} is happy"
+    when:
+    - ping_test.stdout == "PONG"
+    - ping_test.rc == 0
+- hosts: ~app
+  tasks:
+  - name: verify all apps responding
+    uri: "url=http://{{ ansible_default_ipv4.address }}:5000"
+    register: app_test
+  - debug:
+      msg: "App on {{ ansible_default_ipv4.address }} is happy"
+    when: app_test.status == 200

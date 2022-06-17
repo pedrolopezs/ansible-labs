@@ -1,0 +1,24 @@
+My sorted list of important fruits: {% for fruit in fruits|sort %} {{ fruit|capitalize }} {% endfor %}
+
+These versions overlap (in both old and new): {{ old_vers | intersect(new_vers) }}
+
+Number of hosts: {{ hosts|count }}
+
+These are the secrets that can be revealed (in no particular order): {% for data in hosts.values() %}{% if data.settings.reveal %}{{ data.secret }} {% endif %}{% endfor %}
+
+
+Checking app version:
+{% for host,data in hosts.items() %}
+{% if data.settings.appver in new_vers %}
+{{ host }} is upgraded --> ver:{{ data.settings.appver }}
+{% else %}
+{{ host }} is NOT upgraded --> ver:{{ data.settings.appver }}
+{% endif %}
+{% endfor %}
+
+{# Alternative:
+  Checking app version:
+  {% for host,data in hosts.items() %}
+  {{ host }} is {% if data.settings.appver not in new_vers %}NOT {% endif %}upgraded --> ver:{{ data.settings.appver }}
+  {% endfor %}
+#}

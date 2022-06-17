@@ -1,0 +1,8 @@
+---
+- hosts: redis
+  tasks:
+  - name: copy rpms to host
+    copy: src=files/redis/ dest=/tmp
+  - name: install redis
+    yum: "name=/tmp/{{ item|basename }}"
+    with_fileglob: files/redis/*rpm

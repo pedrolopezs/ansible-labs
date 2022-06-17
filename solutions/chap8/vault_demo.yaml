@@ -1,0 +1,11 @@
+---
+- hosts: localhost
+  vars_files:
+  - vault_common.yaml
+  tasks:
+  - debug:
+      var: "{{ item }}"
+    loop:
+    - dbname
+    - dbuser
+    - dbpass

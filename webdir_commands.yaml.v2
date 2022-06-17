@@ -1,0 +1,37 @@
+---
+- hosts: localhost
+  tasks:
+  - name: Find homedir
+    shell: "getent passwd visitor | cut -d: -f6"
+    register: HOMEDIR
+    changed_when: false
+
+  - name: Create webdir
+    command: "mkdir -p {{ HOMEDIR.stdout }}/public_html"
+    args:
+      creates: "{{ HOMEDIR.stdout }}/public_html"
+
+  - name: Create webpage
+    shell: > 
+      echo "<html><h1>Hello World</h1></html>"
+      > "{{ HOMEDIR.stdout }}/public_html/index.html"
+    args:
+      creates: "{{ HOMEDIR.stdout }}/public_html/index.html"
+
+  - name: Check ownership
+    command: "stat -c %U {{ HOMEDIR.stdout }}/public_html/index.html"
+    register: OWNER
+    changed_when: false
+ 
+  - name: Set ownership
+    shell: "chown -R visitor: {{ HOMEDIR.stdout }}/public_html/index.html"
+    when: OWNER.stdout != "visitor"
+
+  - name: Check permission
+    command: "stat -c %a {{ HOMEDIR.stdout }}"
+    register: PERM
+    changed_when: false
+
+  - name: Set permissions
+    command: "chmod 755 {{ HOMEDIR.stdout }}"
+    when: PERM.stdout != "755"

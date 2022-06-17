@@ -1,0 +1,26 @@
+---
+- hosts: redis
+  tasks:
+  - name: copy rpms to host
+    copy: src=files/redis/ dest=/tmp
+  - name: install redis
+    yum: "name=/tmp/{{ item|basename }}"
+    with_fileglob: files/redis/*rpm
+  - name: listen on all interfaces
+    lineinfile:
+      regexp: '^bind 127.0.0.1'
+      state: absent
+      dest: /etc/redis.conf
+    notify: restart redis
+  - name: disable protected mode
+    lineinfile:
+      line: 'protected-mode no'
+      state: present
+      dest: /etc/redis.conf
+    notify: restart redis
+  - name: enable redis
+    service: name=redis enabled=yes
+
+  handlers:
+  - include: handlers/main.yaml
+

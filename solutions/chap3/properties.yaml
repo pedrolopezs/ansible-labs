@@ -1,0 +1,27 @@
+---
+- hosts: localhost
+  tasks:
+  - name: create file
+    file:
+      path: /tmp/file1
+      mode: 0640
+      owner: guru
+      group: users
+      state: touch
+
+  - name: add ACL
+    acl:
+      path: /tmp/file1
+      entity: visitor
+      etype: user
+      permissions: r
+      state: present
+
+
+  - name: create link
+    file:
+      path: /tmp/file2
+      src: /tmp/file1
+      state: link
+
+...

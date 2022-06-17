@@ -1,0 +1,7 @@
+---
+- hosts: localhost
+  vars:
+    myvar1: "Hello"
+    myvar2: "World"
+  tasks:
+  - debug: msg="Your message is {{ myvar1 }}, {{ myvar2 }}" 

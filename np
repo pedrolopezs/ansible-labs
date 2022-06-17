@@ -1,0 +1,11 @@
+#!/bin/sh
+cat << END > $1.yaml
+---
+- hosts: localhost
+  tasks:
+  - name:
+
+
+...
+END
+vim $1.yaml

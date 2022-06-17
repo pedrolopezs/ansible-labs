@@ -1,0 +1,12 @@
+---
+- hosts: localhost
+  tasks:
+  #warning: assumes a specific disk structure!
+  - name: Create third partition
+    parted: 
+      device: /dev/sda
+      number: 3
+      flags: [ lvm ]
+      state: present
+      part_start: 72706048s
+      part_end: 73218048s

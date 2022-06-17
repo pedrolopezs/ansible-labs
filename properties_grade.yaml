@@ -1,0 +1,32 @@
+---
+- hosts: localhost
+  tasks:
+  - name: Gather info file1
+    stat: path=/tmp/file1
+    register: file1
+  - acl: path=/tmp/file1
+    register: file1_acl
+
+  - name: Gather info file2
+    stat: path=/tmp/file2
+    register: file2
+  - debug: var=file2
+
+  - assert: 
+      that:
+      - file1.stat.exists
+      - file1.stat.isreg
+      - file1.stat.uid == 1000
+      - file1.stat.gid == 100
+      - file1.stat.mode == "0640"
+  - assert:
+      that:
+      - file1.stat.exists 
+      - file2.stat.islnk
+      - file2.stat.path == "/tmp/file2"
+      - file2.stat.lnk_source == "/tmp/file1"
+  - assert:
+      that:
+      - '"user:visitor:r--" in file1_acl.acl'
+
+  - debug: msg="Nice job, you pass."

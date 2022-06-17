@@ -1,0 +1,26 @@
+---
+- hosts: localhost
+  vars:
+    node_basename: web
+    number_of_nodes: 3
+    inventory_directory: /home/guru/playbooks
+  tasks:
+  - name: Start containers for Web
+    shell: "sh /labfiles/docker_centos_init.sh {{ node_basename ~ item }}"
+    with_sequence: "count={{ number_of_nodes }}"
+    register: web_build
+
+  - name: Start container for HAProxy
+    shell: "sh /labfiles/docker_centos_init.sh haproxy_lb"
+    register: lb_build
+
+  - name: Create static inventory
+    copy:
+      dest: "{{ inventory_directory }}/lb_web_inventory"
+      content: |
+        [web]
+        {% for result in web_build.results %}
+        {{ result.stdout }}
+        {% endfor %}
+        [lb]
+        {{ lb_build.stdout }}

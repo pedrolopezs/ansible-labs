@@ -1,0 +1,6 @@
+---
+- hosts: localhost
+  tasks:
+  - debug: msg="Hostname is {{ ansible_fqdn }}"
+  - debug: msg="IP list contains {{ ansible_all_ipv4_addresses }}"
+

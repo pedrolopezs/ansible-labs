@@ -1,0 +1,5 @@
+---
+- hosts: redis
+  tasks:
+  - name: install redis
+    yum: name=redis state=latest

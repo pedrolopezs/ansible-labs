@@ -1,0 +1,22 @@
+---
+- hosts: localhost
+  gather_facts: No
+  tasks:
+  - name: Get current number of web nodes
+    shell: >
+      {%raw%} docker ps --filter "name=web." --format "{{.Names}}" | wc -l {%endraw%}
+    register: current_number_of_nodes
+
+- import_playbook: provision_lb_web_cluster.yaml
+  vars:
+    number_of_nodes: "{{ current_number_of_nodes.stdout|int + scale_num|int|default(1) }}"
+- import_playbook: configure_web_cluster.yaml
+- import_playbook: configure_lb.yaml
+
+- hosts: lb
+  gather_facts: No
+  tasks:
+  - name: Reload config for load balancer
+    systemd:
+      name: haproxy
+      state: restarted

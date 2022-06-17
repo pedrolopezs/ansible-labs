@@ -1,0 +1,8 @@
+Hello, and welcome to:
+
+{{ fig_hostname.stdout }}
+
+Primary IP: {{ ansible_default_ipv4.address }}
+On network: {{ [ansible_default_ipv4.network, ansible_default_ipv4.netmask] | join('/') | ipaddr('net') }}
+
+{{ lookup('pipe', 'last -n10 reboot') | comment('plain', prefix='#######\n#', postfix='#\n#######') }}

@@ -1,0 +1,31 @@
+# vim: ft=ansible sw=2 ts=2
+---
+- hosts: localhost
+  tasks:
+  - name: Simple greeting
+    debug: msg="Hello from the playbook!"
+
+  - name: Greeting to file
+    copy:
+      dest: /tmp/greeting
+      content: |
+        This message is longer
+        it spans a few lines
+        and uses fancier yaml
+
+  - name: Wait a few seconds
+    pause: prompt="hang on:" seconds=3
+
+  - name: Get dir listing
+    shell: "ls *yaml"
+
+  - name: Create empty file
+    file: path=/tmp/working3 state=touch mode=0640
+
+  - name: Add greeting to file
+    lineinfile:
+      line: >
+        This is not really
+        several lines of text
+        once it hits the file.
+      path: /tmp/working3

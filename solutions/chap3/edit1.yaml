@@ -1,0 +1,14 @@
+---
+- hosts: centos_1,centos_2
+  tasks:
+  - name: Manually add account to passwd file
+    lineinfile:
+      path: /etc/passwd
+      line: 'guru:x:1000:100::/tmp:/bin/bash'
+
+  - name: Use false instead of nologin
+    replace:
+      path: /etc/passwd
+      regexp: /sbin/nologin
+      replace: /bin/false
+...

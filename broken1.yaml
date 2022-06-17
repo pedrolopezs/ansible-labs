@@ -1,0 +1,6 @@
+---
+- hosts: localhost
+  tasks:
+  - name: copy config
+    copy: dest=/tmp/broken1
+      content: "Will this work?"

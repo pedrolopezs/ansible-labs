@@ -1,0 +1,10 @@
+[Unit]
+Description=app1 daemon
+After=network.target
+
+[Service]
+Environment=HOSTNAME={{ ansible_fqdn }}
+ExecStart=/usr/bin/python /root/app.py
+
+[Install]
+WantedBy=multi-user.target

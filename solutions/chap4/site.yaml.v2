@@ -1,0 +1,36 @@
+---
+- hosts: web
+  vars:
+    port: 8000
+  tasks:
+  - name: Import content
+    include_vars: vars/content.yaml
+
+  - name: Install web
+    import_tasks: tasks/install.yaml
+    vars:
+      service: httpd
+
+  - name: Install firewall
+    import_tasks: tasks/install.yaml
+    vars:
+      service: firewalld
+
+  - name: Configure Firewall
+    import_tasks: tasks/firewall.yaml
+
+  - name: Configure web for alternate port
+    lineinfile:
+      path: /etc/httpd/conf/httpd.conf
+      regexp: '^Listen'
+      line: "Listen {{ port }}"
+
+  - name: Create index.html
+    copy:
+      dest: /var/www/html/index.html
+      content: "{{ web_content }}"
+
+  - name: Restart web
+    systemd:
+      name: httpd
+      state: restarted
