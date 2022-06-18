@@ -1,0 +1,23 @@
+---
+- hosts: localhost
+  tasks:
+  - include: docker-py.yaml
+  - name: Create registry
+    docker_container:
+      name: registry
+      state: started
+      image: registry:2.6
+      published_ports: 5000:5000
+      restart_policy: always
+      volumes: registry:/var/lib/registry 
+
+  - name: Create registry mirror
+    docker_container:
+      name: registry-mirror
+      state: started
+      image: registry:2.6
+      published_ports: 5001:5001
+      restart_policy: unless-stopped
+      volumes:
+        - registry:/var/lib/registry
+        - /home/centos/ansible-labs/registry-config.yml:/etc/docker/registry/config.yml

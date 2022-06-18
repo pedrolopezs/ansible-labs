@@ -1,0 +1,14 @@
+version: '3'
+services:
+  centos7:
+    build: centos7
+    image: c7:ansible
+  centos7-init:
+    build: centos7-init
+    image: c7-init:ansible
+  u18.04:
+    build: u18.04
+    image: u18:ansible
+  u18.04-init:
+    build: u18.04-init
+    image: u18-init:ansible
