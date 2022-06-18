@@ -1,0 +1,19 @@
+---
+- hosts: localhost
+  gather_facts: False
+  tasks:
+  - name: Tag and push to registry
+    docker_image:
+      name: "{{ item.name }}"
+      repository: "{{ item.repository }}"
+      push: yes
+    with_items:
+      - name: "c7:ansible"
+        repository: "localhost:5000/centos:latest"
+      - name: "u18:ansible"
+        repository: "localhost:5000/ubuntu:latest"
+      - name: "c7-init:ansible"
+        repository: "localhost:5000/centos-init:latest"
+      - name: "u18-init:ansible"
+        repository: "localhost:5000/ubuntu-init:latest"
+
