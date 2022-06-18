@@ -1,0 +1,23 @@
+lb.example.com # single host
+
+[web] # group of 3 hosts
+web1.example.com
+web2.example.com
+192.0.2.42 # can use IP instead
+
+[db]
+db1.example.com
+db2.example.com
+
+[zone1] # hosts can be in multiple groups
+web1.example.com
+web2.example.com
+db1.example.com
+
+[zone2]
+web3.example.com
+db2.example.com
+
+[app1:children] # a group of groups
+db
+web

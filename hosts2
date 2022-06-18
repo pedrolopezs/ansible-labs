@@ -1,0 +1,11 @@
+lb.example.com
+[web]
+web[1:3].example.com
+[db]
+db[1:2].example.com
+[zone1]
+web[1:2].example.com
+db1.example.com
+[zone2]
+web3.example.com
+db2.example.com
