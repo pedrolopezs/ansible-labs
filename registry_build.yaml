@@ -1,0 +1,28 @@
+---
+- hosts: localhost
+  tasks:
+  - include: docker-py.yaml
+
+  - name: Crea Registro Primario
+    docker_container:
+      name: registry
+      state: started
+      image: registry:latest
+      published_ports: 5000:5000
+      restart_policy: always
+
+  - name: Etiqueta Imagenes y hace Push al registro
+    docker_image:
+      name: "{{ item.name }}"
+      repository: "{{ item.repository }}"
+      source: local
+      push: yes
+    with_items:
+      - name: "c7:ansible"
+        repository: "localhost:5000/centos:latest"
+      - name: "u18:ansible"
+        repository: "localhost:5000/ubuntu:latest"
+      - name: "c7-init:ansible"
+        repository: "localhost:5000/centos-init:latest"
+      - name: "u18-init:ansible"
+        repository: "localhost:5000/ubuntu-init:latest"

@@ -1,0 +1,20 @@
+---
+- hosts: pls
+  tasks:
+    - name: Instala Docker
+      yum:
+        name: docker
+        state: present
+    - name: Comprueba que existe el fichero de configuracion
+      file:
+        name: "/etc/docker"
+        state: directory
+    - name: Inserta el fichero de configuracion
+      copy:
+        dest: "/etc/docker/daemon.json"
+        src: "daemon.json"
+    - name: Habilita y Arranca el servicio
+      systemd:
+        name: docker
+        enabled: yes
+        state: started
