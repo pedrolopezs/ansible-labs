@@ -1,5 +1,5 @@
 ---
-- hosts: pls
+- hosts: localhost
   tasks:
   - include: docker.yaml
 # CAMBIAR EN IMAGE LA IP POR LA DE LA VM DE CONTROL
