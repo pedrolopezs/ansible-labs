@@ -1,5 +1,4 @@
-# CAMBIAR LA RED DE INSECURE POR LA QUE SE USE Y LA IP DE REGISTRY POR LA DEL NODO DE CONTROL
 {
   "insecure-registries": ["172.31.0.0/20"],
-  "registry-mirrors": ["http://172.31.11.235:5001"],
+  "registry-mirrors": ["http://172.31.2.176:5000"]
 }

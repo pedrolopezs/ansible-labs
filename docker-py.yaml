@@ -1,4 +1,3 @@
 ---
 - name: Update Ansible Docker module
-  yum: name=python2-pip state=present
-- pip: name=docker-py
+  pip: name=docker

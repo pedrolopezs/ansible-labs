@@ -2,19 +2,19 @@
 - hosts: localhost
   tasks:
   - include: docker-py.yaml
-
+# CAMBIAR EN IMAGE LA IP POR LA DE LA VM DE CONTROL
   - name: Start some Centos containers
     docker_container:
-      name: "centos"
-      image: centos
+      name: "centos_{{ item }}"
+      image: 172.31.2.176:5000/centos
       interactive: true
       tty: true
     with_sequence: count=3
 
   - name: Start some Ubuntu containers
     docker_container:
-      name: "ubuntu"
-      image: ubuntu
+      name: "ubuntu_{{ item }}"
+      image: 172.31.2.176:5000/ubuntu
       interactive: true
       tty: true
     with_sequence: count=3

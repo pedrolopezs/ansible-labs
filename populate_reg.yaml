@@ -6,6 +6,7 @@
     docker_image:
       name: "{{ item.name }}"
       repository: "{{ item.repository }}"
+      source: local
       push: yes
     with_items:
       - name: "c7:ansible"
