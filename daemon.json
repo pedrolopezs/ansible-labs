@@ -1,4 +1,4 @@
 {
   "insecure-registries": ["172.31.0.0/20"],
-  "registry-mirrors": ["http://172.31.2.176:5000"]
+  "registry-mirrors": ["http://172.31.23.162:5000"]
 }

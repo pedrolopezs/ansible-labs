@@ -2,12 +2,12 @@
 - hosts: pls
   tasks:
   - name: Install Ansible Docker module
-    pip: name=docker
+    pip: name=docker-py
 # CAMBIAR EN IMAGE LA IP POR LA DE LA VM DE CONTROL
   - name: Start some Centos containers
     docker_container:
       name: "centos_{{ item }}"
-      image: 172.31.21.78:5000/centos
+      image: 172.31.23.162:5000/centos
       interactive: true
       tty: true
     with_sequence: count=3
@@ -15,7 +15,7 @@
   - name: Start some Ubuntu containers
     docker_container:
       name: "ubuntu_{{ item }}"
-      image: 172.31.21.78:2.176:5000/ubuntu
+      image: 172.31.23.162:5000/ubuntu
       interactive: true
       tty: true
     with_sequence: count=3

@@ -1,8 +1,8 @@
 ---
 - hosts: localhost
   tasks:
-  - include: docker-py.yaml
-
+  - name: Install Ansible Docker module
+    pip: name=docker-py
   - name: Crea Registro Primario
     docker_container:
       name: registry
