@@ -5,20 +5,16 @@
   - image: centos
   - number: 3
   tasks:
-  - name: Install python2 pip utility
-    yum:
-      name: python2-pip
-      state: present
 
-  - name: Install Python docker-py module
+  - name: Install Python docker module
     pip:
-      name: docker-py
+      name: docker
 
   - name: "Start some {{ image }} containers"
     docker_container:
       name: "{{ image }}_{{ item }}"
       hostname: "{{ image }}_{{ item }}"
-      image: "server1:5000/{{ image }}"
+      image: "172.31.28.22:5000/{{ image }}"
       interactive: true
       tty: true
     with_sequence: "count={{ number }}"
