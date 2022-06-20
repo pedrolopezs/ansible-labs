@@ -3,8 +3,10 @@ regions:
   - us-west-2
 keyed_groups:  
   - key: tags.Group
-    separator: ""
+    separator: "_"
+    prefix: "grupo"
 compose:
   ansible_host: private_ip_address
 hostnames:
   - private-dns-name
+#  - private-ip-address
