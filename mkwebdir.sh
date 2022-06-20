@@ -6,13 +6,12 @@ if [[ "${#}" -ne 1 ]]; then
 fi
 
 USER="${1}"
+HOMEDIR="$(getent passwd "${USER}" | cut -d: -f6)"
+PUBDIR="${HOMEDIR}/public_html"
 
 if [[ -z "${HOMEDIR}" ]]; then
 	useradd -m $USER
 fi
-
-HOMEDIR="$(getent passwd "${USER}" | cut -d: -f6)"
-PUBDIR="${HOMEDIR}/public_html"
 
 if [[ ! -d "${HOMEDIR}" ]]; then
 	echo "Error: The directory ${HOMEDIR} doesn't exist."
