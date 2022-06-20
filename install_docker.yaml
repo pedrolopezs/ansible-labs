@@ -1,5 +1,5 @@
 ---
-- hosts: pls
+- hosts: grupo_pls
   tasks:
 
     - name: Instala Docker

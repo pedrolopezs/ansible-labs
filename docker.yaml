@@ -1,3 +1,5 @@
 ---
 - name: Actualiza el Modulo Ansible Docker
   pip: name=docker
+- name: Actualiza el Modulo Yaml
+  pip: name=pyyaml
