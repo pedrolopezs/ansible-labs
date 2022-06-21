@@ -1,4 +1,4 @@
 {
-  "insecure-registries": ["172.31.2.198:5000"],
+  "insecure-registries": ["172.31.0.0/20"],
   "group": "dockerroot"
 }

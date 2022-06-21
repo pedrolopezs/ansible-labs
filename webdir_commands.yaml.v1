@@ -1,8 +1,13 @@
 ---
 - hosts: localhost
+  vars: 
+    user: visitor
   tasks:
+  - name: Crea Usuario
+    user:
+      name: "{{ user }}"
   - name: Find homedir
-    shell: "getent passwd visitor | cut -d: -f6"
+    shell: "getent passwd {{ user }} | cut -d: -f6"
     register: HOMEDIR
 
   - name: Create webdir
@@ -14,7 +19,7 @@
       > "{{ HOMEDIR.stdout }}/public_html/index.html"
 
   - name: Set ownership
-    shell: "chown -R visitor: {{ HOMEDIR.stdout }}/public_html/index.html"
+    shell: "chown -R {{ user}}: {{ HOMEDIR.stdout }}/public_html/index.html"
 
   - name: Set permissions
     command: "chmod 755 {{ HOMEDIR.stdout }}"

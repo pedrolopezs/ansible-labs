@@ -2,4 +2,4 @@
 - hosts: localhost
   tasks:
   - name: Create user web dir
-    script: /labfiles/mkwebdir.sh visitor
+    script: mkwebdir.sh visitor

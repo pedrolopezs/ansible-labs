@@ -1,5 +1,5 @@
 ---
-- hosts: grupo_pls
+- hosts: all
   tasks:
 
     - name: Instala Docker
@@ -21,4 +21,9 @@
       systemd:
         name: docker
         enabled: yes
-        state: started
+        state: restarted
+
+    - name: pone los grupos secundarios del usuario centos
+      user: 
+        name: centos
+        groups: dockerroot,adm,systemd-journal
