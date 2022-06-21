@@ -1,3 +1,4 @@
+# INVOCAR ESTE PLAYBOOK CON LA OPCION -l "grupo de maquinas"
 ---
 - hosts: all
   tasks:
