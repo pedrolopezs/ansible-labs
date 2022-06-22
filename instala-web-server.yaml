@@ -1,0 +1,25 @@
+---
+- name: Instalación de Nginx
+  hosts: localhost
+  tasks:
+    - name: Instalando el paquete nginx
+      yum:
+        name: nginx
+        state: latest
+    - name: Servicio Nginx arrancado
+      service: 
+        name: nginx
+        state: started
+        enabled: true
+    - name: Instalando elinks
+      package:
+        name: elinks
+        state: latest
+    - name: Copia el fichero index.html
+      copy:
+        src: index.html
+        dest: /var/www/html/index.html
+        owner: www-data
+        group: www-data
+        mode: '0644'
+...
