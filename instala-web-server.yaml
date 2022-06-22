@@ -15,6 +15,10 @@
       package:
         name: elinks
         state: latest
+    - name: Crea el directori
+      file:
+        name: /var/www/html
+        state: directory
     - name: Copia el fichero index.html
       copy:
         src: index.html
