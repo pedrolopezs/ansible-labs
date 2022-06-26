@@ -1,12 +1,103 @@
 ---
 - hosts: redis
   tasks:
-  - name: copy rpms to host
-    copy: 
-      src: files/redis/ 
-      dest: /tmp
-  - name: install redis
-    yum: 
-      name: "/tmp/{{ item|basename }}"
+  - name: redis already good?
+    command: redis-cli -h 172.19.0.3 ping
+    register: ping_result
+    failed_when: false
+    changed_when: false
+  - block:
+    - name: copy rpms to host
+      copy: src=files/redis/ dest=/tmp
+    - name: install redis
+      yum: 
+        name: "/tmp/{{ item|basename }}"
+        disable_gpg_check: yes
+      with_fileglob: files/redis/*rpm
+    - name: listen on all interfaces
+      lineinfile:
+        regexp: '^bind 127.0.0.1'
+        state: absent
+        dest: /etc/redis/redis.conf
+      notify: restart redis
+    - name: disable protected mode
+      lineinfile:
+        line: 'protected-mode no'
+        state: present
+        dest: /etc/redis/redis.conf
+      notify: restart redis
+    - name: enable redis
+      service: name=redis enabled=yes
+    when: 
+    - ping_result.rc != 0
+
+  handlers:
+  - include: handlers/main.yaml
+
+- hosts: ~app 
+  gather_facts: No
+  vars_files:
+  - vars/app-version
+  tasks:
+  - name: install iproute needed for fact gathering
+    yum: name=iproute
+  - setup:
+#  - name: copy rpms to host
+#    copy: src=files/app/ dest=/tmp
+  - name: install Python
+    yum:
+      name: "{{ item }}"
       disable_gpg_check: yes
-    with_fileglob: files/redis/*rpm
+    with_items: 
+      - python3
+      - python3-pip
+  - name: App install with rollback
+    block:
+    - name: install requirements
+      pip: "name={{ item }}"
+      with_lines: cat "app/requirements.txt"
+    - name: install app version {{ deploy_version }}
+      copy:
+        src: app/app-v{{ deploy_version }}.py
+        dest: /root/
+    - name: install unit file
+      template:
+        src: app/app.service.j2
+        dest: /etc/systemd/system/app.service
+    - name: link to app version {{ deploy_version }}
+      file:
+        state: link
+        dest: /root/app.py
+        src: /root/app-v{{ deploy_version }}.py
+    - name: start app
+      systemd:
+        name: app
+        daemon_reload: yes
+        state: started
+        enabled: yes
+    - name: test app
+      uri: "url=http://{{ ansible_default_ipv4.address }}:5000 return_content=yes"
+      register: apptest
+    - fail:
+      when: '"Hello from host" not in apptest.content'
+    rescue:
+    - name: stop old app
+      systemd: name=app state=stopped
+    - name: install app version {{ rollback_version }}
+      copy:
+        src: app/app-v{{ rollback_version }}.py
+        dest: /root/
+    - name: link to app version {{ rollback_version }}
+      file:
+        state: link
+        dest: /root/app.py
+        src: /root/app-v{{ rollback_version }}.py
+    - name: start app
+      systemd: name=app state=started
+    always:
+    - name: final app status
+      command: systemctl status app
+      register: appstatus
+      tags: [status]
+    - debug: "msg={{ appstatus.stdout_lines }}"
+      tags: [status]
