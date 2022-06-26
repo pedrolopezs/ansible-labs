@@ -1,3 +1,4 @@
 para ejecutar en Mac con python 2.7
+lanzar docker desktop
 python2 -m pip install docker-py pyyaml
 export ANSIBLE_CONFIG=ansible.cfg

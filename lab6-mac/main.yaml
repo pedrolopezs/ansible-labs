@@ -1,8 +1,12 @@
 ---
 - hosts: redis
   tasks:
+# EN ESTE BLOQUE LA VARIABLE ansible_default_ipv4.address NO ESTA DEFINIDA
+# SE PUEDE COMPROBAR DESCOMENTANDO LA SIGUIENTE LINEA
+#  - debug: msg="{{ ansible_default_ipv4.address }}"
   - name: redis already good?
     command: redis-cli -h 172.19.0.3 ping
+#    command: redis-cli -h "{{ ansible_default_ipv4.address }}" ping
     register: ping_result
     failed_when: false
     changed_when: false
@@ -42,8 +46,9 @@
   - name: install iproute needed for fact gathering
     yum: name=iproute
   - setup:
-#  - name: copy rpms to host
-#    copy: src=files/app/ dest=/tmp
+# EN ESTE BLOQUE LA VARIABLE ansible_default_ipv4.address SI ESTA DEFINIDA
+# SE PUEDE COMPROBAR DESCOMENTANDO LA SIGUIENTE LINEA
+#  - debug: msg="{{ ansible_default_ipv4.address }}"
   - name: install Python
     yum:
       name: "{{ item }}"
@@ -99,5 +104,6 @@
       command: systemctl status app
       register: appstatus
       tags: [status]
+      changed_when: false
     - debug: "msg={{ appstatus.stdout_lines }}"
       tags: [status]

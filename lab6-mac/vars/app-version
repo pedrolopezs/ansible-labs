@@ -1,2 +1,5 @@
 ---
+# CUANDO SE CAMBIA LA VARIABLE deploy_version A 2 EL PLAYBOOK FALLA PORQUE EL FICHERO .py DE LA V2 TIENE UNA ERRATA
+# EN ESE CASO SE ACTIVA EL BLOQUE RESCUE QUE RE-INSTALA LA rollback_version
 deploy_version: 1
+rollback_version: 1
